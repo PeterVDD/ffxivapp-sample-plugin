@@ -84,6 +84,8 @@ namespace Sample.Plugin
             }
         }
 
+        public string FriendlyName { get; set; }
+
         public string Name
         {
             get { return _name; }
@@ -104,6 +106,7 @@ namespace Sample.Plugin
 
         public void Initialize()
         {
+            FriendlyName = "Sample";
             Name = AssemblyHelper.Name;
             Icon = "Logo.png";
             Description = AssemblyHelper.Description;
