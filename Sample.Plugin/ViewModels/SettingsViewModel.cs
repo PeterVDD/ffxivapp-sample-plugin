@@ -58,7 +58,7 @@ namespace Sample.Plugin.ViewModels
             popupContent.PluginName = Plugin.PName;
             popupContent.Title = PluginViewModel.Instance.Locale["app_WarningMessage"];
             popupContent.Message = PluginViewModel.Instance.Locale["sample_ClearChatLogMessage"];
-            popupContent.CanSayNo = true;
+            popupContent.CanCancel = true;
             bool popupDisplayed;
             Plugin.PHost.PopupMessage(Plugin.PName, out popupDisplayed, popupContent);
             if (!popupDisplayed)
@@ -70,10 +70,10 @@ namespace Sample.Plugin.ViewModels
             {
                 switch (e.NewValue.ToString())
                 {
-                    case "Yes":
+                    case "Ok":
                         MainView.View.ChatLogFD._FD.Blocks.Clear();
                         break;
-                    case "No":
+                    case "Cancel":
                         break;
                 }
                 PluginViewModel.Instance.PopupResultChanged -= resultChanged;
