@@ -21,11 +21,6 @@ namespace Sample.Plugin
 
         #endregion
 
-        public static void LoadConstants()
-        {
-            Plugin.PHost.GetConstants(Plugin.PName);
-        }
-
         /// <summary>
         /// </summary>
         public static void LoadSettings()

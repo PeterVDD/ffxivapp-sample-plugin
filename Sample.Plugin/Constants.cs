@@ -99,8 +99,6 @@ namespace Sample.Plugin
 
         public static string GameLanguage { get; set; }
 
-        public static bool EnableNLog { get; set; }
-
         public static bool EnableHelpLabels { get; set; }
 
         #endregion

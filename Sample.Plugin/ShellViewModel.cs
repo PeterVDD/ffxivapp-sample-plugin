@@ -30,7 +30,6 @@ namespace Sample.Plugin
 
         public ShellViewModel()
         {
-            Initializer.LoadConstants();
             Initializer.LoadSettings();
         }
 

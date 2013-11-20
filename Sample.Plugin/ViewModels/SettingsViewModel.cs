@@ -70,7 +70,7 @@ namespace Sample.Plugin.ViewModels
             {
                 switch (e.NewValue.ToString())
                 {
-                    case "Ok":
+                    case "OK":
                         MainView.View.ChatLogFD._FD.Blocks.Clear();
                         break;
                     case "Cancel":

@@ -7,12 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using FFXIVAPP.Common.Chat;
+using FFXIVAPP.Common.Core;
+using FFXIVAPP.Common.Core.Constant;
+using FFXIVAPP.Common.Core.Memory;
 using FFXIVAPP.Common.Events;
 using FFXIVAPP.Common.Helpers;
 using FFXIVAPP.Common.Utilities;
@@ -33,6 +34,8 @@ namespace Sample.Plugin
 
         public static IPluginHost PHost { get; private set; }
         public static string PName { get; private set; }
+
+        public IApplicationContext ApplicationContext { get; set; }
 
         #endregion
 
@@ -104,8 +107,15 @@ namespace Sample.Plugin
 
         public Exception Trace { get; private set; }
 
-        public void Initialize()
+        public void Initialize(IApplicationContext applicationContext)
         {
+            ApplicationContext = applicationContext;
+            ApplicationContext.ChatLogWorker.OnNewLine += ChatLogWorkerOnNewLine;
+            ApplicationContext.ConstantWorker.OnNewValues += ConstantWorkerOnNewValues;
+            ApplicationContext.MonsterWorker.OnNewEntities += MonsterWorkerOnNewEntities;
+            ApplicationContext.NPCWorker.OnNewEntities += NPCWorkerOnNewEntities;
+            ApplicationContext.PCWorker.OnNewEntities += PCWorkerOnNewEntities;
+            ApplicationContext.PlayerInfoWorker.OnNewEntity += PlayerInfoWorkerOnNewEntity;
             FriendlyName = "Sample";
             Name = AssemblyHelper.Name;
             Icon = "Logo.png";
@@ -150,72 +160,6 @@ namespace Sample.Plugin
             return content;
         }
 
-        public void OnNewLine(out bool success, params object[] entry)
-        {
-            try
-            {
-                var chatEntry = new ChatEntry
-                {
-                    Bytes = (byte[]) entry[0],
-                    Code = (string) entry[1],
-                    Combined = (string) entry[2],
-                    JP = (bool) entry[3],
-                    Line = Regex.Replace((string) entry[4], "[ ]+", " "),
-                    Raw = (string) entry[5],
-                    TimeStamp = (DateTime) entry[6]
-                };
-                Func<bool> publish = delegate
-                {
-                    DispatcherHelper.Invoke(() => LogPublisher.Process(chatEntry));
-                    return true;
-                };
-                publish.BeginInvoke(null, null);
-            }
-            catch (Exception ex)
-            {
-                //Logging.Log(LogManager.GetCurrentClassLogger(), "", ex);
-                Notice = ex.Message;
-            }
-            success = true;
-        }
-
-        public void SetConstants(ConstantsType type, object data)
-        {
-            switch (type)
-            {
-                case ConstantsType.AutoTranslate:
-                    Constants.AutoTranslate = data as Dictionary<string, string>;
-                    break;
-                case ConstantsType.ChatCodes:
-                    Constants.ChatCodes = data as Dictionary<string, string>;
-                    break;
-                case ConstantsType.ChatCodesXml:
-                    Constants.ChatCodesXml = data as string;
-                    break;
-                case ConstantsType.Colors:
-                    Constants.Colors = data as Dictionary<string, string[]>;
-                    break;
-                case ConstantsType.CultureInfo:
-                    Constants.CultureInfo = data as CultureInfo;
-                    break;
-                case ConstantsType.CharacterName:
-                    Constants.CharacterName = data as string;
-                    break;
-                case ConstantsType.ServerName:
-                    Constants.ServerName = data as string;
-                    break;
-                case ConstantsType.GameLanguage:
-                    Constants.GameLanguage = data as string;
-                    break;
-                case ConstantsType.EnableNLog:
-                    Constants.EnableNLog = data is bool && (bool) data;
-                    break;
-                case ConstantsType.EnableHelpLabels:
-                    PluginViewModel.Instance.EnableHelpLabels = Constants.EnableHelpLabels = data is bool && (bool) data;
-                    break;
-            }
-        }
-
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -226,5 +170,53 @@ namespace Sample.Plugin
         }
 
         #endregion
+
+        private void ChatLogWorkerOnNewLine(ChatLogEntry chatLogEntry)
+        {
+            // delegate event from chat log, not required to subsribe
+            try
+            {
+                LogPublisher.Process(chatLogEntry);
+            }
+            catch (Exception ex)
+            {
+                //Logging.Log(LogManager.GetCurrentClassLogger(), "", ex);
+                MessageBox.Show(ex.Message);
+                Notice = ex.Message;
+            }
+        }
+
+        private void ConstantWorkerOnNewValues(ConstantEntry constantEntry)
+        {
+            // delegate event from constants, not required to subsribe, but recommended as it gives you app settings
+            Constants.AutoTranslate = constantEntry.AutoTranslate;
+            Constants.ChatCodes = constantEntry.ChatCodes;
+            Constants.Colors = constantEntry.Colors;
+            Constants.CultureInfo = constantEntry.CultureInfo;
+            Constants.CharacterName = constantEntry.CharacterName;
+            Constants.ServerName = constantEntry.ServerName;
+            Constants.GameLanguage = constantEntry.GameLanguage;
+            Constants.EnableHelpLabels = constantEntry.EnableHelpLabels;
+        }
+
+        private void MonsterWorkerOnNewEntities(List<ActorEntity> actorEntities)
+        {
+            // delegate event from monster entities from ram, not required to subsribe
+        }
+
+        private void NPCWorkerOnNewEntities(List<ActorEntity> actorEntities)
+        {
+            // delegate event from npc entities from ram, not required to subsribe; this list includes anything that is not a player or monster
+        }
+
+        private void PCWorkerOnNewEntities(List<ActorEntity> actorEntities)
+        {
+            // delegate event from player entities from ram, not required to subsribe
+        }
+
+        private void PlayerInfoWorkerOnNewEntity(PlayerEntity playerEntity)
+        {
+            // delegate event from player info from ram, not required to subsribe; this is for YOU and includes all your stats
+        }
     }
 }

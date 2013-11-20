@@ -4,7 +4,7 @@
 #region Usings
 
 using System;
-using FFXIVAPP.Common.Chat;
+using FFXIVAPP.Common.Core.Memory;
 using FFXIVAPP.Common.Utilities;
 using NLog;
 using Sample.Plugin.Properties;
@@ -16,7 +16,7 @@ namespace Sample.Plugin.Utilities
 {
     public static class LogPublisher
     {
-        public static void Process(ChatEntry chatEntry)
+        public static void Process(ChatLogEntry chatEntry)
         {
             try
             {
