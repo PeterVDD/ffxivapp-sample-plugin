@@ -32,5 +32,5 @@ Thanks!
 
 * The log entry point to use what comes from the chat is under Utilities\LogPublishers\Process()
 * The tab/window entry point is ShellView.xaml; with loading functions defined in the .cs file
-* There is an option to make you're plugin act as a window which means once it's added to the main application you can make it have a separate appearance for the window.
+* There is an option to make your plugin acts as a window which means once it's added to the main application you can make it have a separate appearance for the window.
 * Plugin entry point is Plugin.cs and controls the plugin info/other functionality of commands being sent and recieved.
