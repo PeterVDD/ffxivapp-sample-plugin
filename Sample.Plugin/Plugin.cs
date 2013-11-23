@@ -197,6 +197,7 @@ namespace Sample.Plugin
             Constants.ServerName = constantEntry.ServerName;
             Constants.GameLanguage = constantEntry.GameLanguage;
             Constants.EnableHelpLabels = constantEntry.EnableHelpLabels;
+            PluginViewModel.Instance.EnableHelpLabels = Constants.EnableHelpLabels;
         }
 
         private void MonsterWorkerOnNewEntities(List<ActorEntity> actorEntities)
