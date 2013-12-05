@@ -116,6 +116,7 @@ namespace Sample.Plugin
             ApplicationContext.NPCWorker.OnNewEntities += NPCWorkerOnNewEntities;
             ApplicationContext.PCWorker.OnNewEntities += PCWorkerOnNewEntities;
             ApplicationContext.PlayerInfoWorker.OnNewEntity += PlayerInfoWorkerOnNewEntity;
+            ApplicationContext.TargetWorker.OnNewEntity += TargetWorkerOnNewEntity;
             FriendlyName = "Sample";
             Name = AssemblyHelper.Name;
             Icon = "Logo.png";
@@ -174,6 +175,7 @@ namespace Sample.Plugin
         private void ChatLogWorkerOnNewLine(ChatLogEntry chatLogEntry)
         {
             // delegate event from chat log, not required to subsribe
+            // this updates 100 times a second and only sends a line when it gets a new one
             try
             {
                 LogPublisher.Process(chatLogEntry);
@@ -203,21 +205,39 @@ namespace Sample.Plugin
         private void MonsterWorkerOnNewEntities(List<ActorEntity> actorEntities)
         {
             // delegate event from monster entities from ram, not required to subsribe
+            // this updates 10x a second and only sends data if the items are found in ram
+            // currently there no change/new/removed event handling (looking into it)
         }
 
         private void NPCWorkerOnNewEntities(List<ActorEntity> actorEntities)
         {
-            // delegate event from npc entities from ram, not required to subsribe; this list includes anything that is not a player or monster
+            // delegate event from npc entities from ram, not required to subsribe
+            // this list includes anything that is not a player or monster
+            // this updates 10x a second and only sends data if the items are found in ram
+            // currently there no change/new/removed event handling (looking into it)
         }
 
         private void PCWorkerOnNewEntities(List<ActorEntity> actorEntities)
         {
             // delegate event from player entities from ram, not required to subsribe
+            // this updates 10x a second and only sends data if the items are found in ram
+            // currently there no change/new/removed event handling (looking into it)
         }
 
         private void PlayerInfoWorkerOnNewEntity(PlayerEntity playerEntity)
         {
-            // delegate event from player info from ram, not required to subsribe; this is for YOU and includes all your stats
+            // delegate event from player info from ram, not required to subsribe
+            // this is for YOU and includes all your stats and your agro list with hate values as %
+            // this updates 10x a second and only sends data when the newly read data is differen than what was previously sent
+        }
+
+        private void TargetWorkerOnNewEntity(TargetEntity targetEntity)
+        {
+            // delegate event from target info from ram, not required to subsribe
+            // this includes the full entities for current, previous, mouseover, focus targets (if 0+ are found)
+            // it also includes a list of upto 16 targets that currently have hate on the currently targeted monster
+            // these hate values are realtime and change based on the action used
+            // this updates 10x a second and only sends data when the newly read data is differen than what was previously sent
         }
     }
 }
