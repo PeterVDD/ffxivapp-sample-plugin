@@ -59,12 +59,7 @@ namespace Sample.Plugin.ViewModels
             popupContent.Title = PluginViewModel.Instance.Locale["app_WarningMessage"];
             popupContent.Message = PluginViewModel.Instance.Locale["sample_ClearChatLogMessage"];
             popupContent.CanCancel = true;
-            bool popupDisplayed;
-            Plugin.PHost.PopupMessage(Plugin.PName, out popupDisplayed, popupContent);
-            if (!popupDisplayed)
-            {
-                return;
-            }
+            Plugin.PHost.PopupMessage(Plugin.PName, popupContent);
             EventHandler<PopupResultEvent> resultChanged = null;
             resultChanged = delegate(object sender, PopupResultEvent e)
             {
