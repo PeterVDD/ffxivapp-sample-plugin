@@ -1,16 +1,12 @@
 ﻿// Sample.Plugin
 // LocaleHelper.cs
 
-#region Usings
-
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using Sample.Plugin.Localization;
-
-#endregion
 
 namespace Sample.Plugin.Helpers
 {

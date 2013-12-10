@@ -1,11 +1,7 @@
 ﻿// Sample.Plugin
 // English.cs
 
-#region Usings
-
 using System.Windows;
-
-#endregion
 
 namespace Sample.Plugin.Localization
 {

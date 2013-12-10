@@ -1,13 +1,9 @@
 ﻿// Sample.Plugin
 // ShellViewModel.cs
 
-#region Usings
-
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-
-#endregion
 
 namespace Sample.Plugin
 {

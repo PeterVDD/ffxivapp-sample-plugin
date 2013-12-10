@@ -1,12 +1,8 @@
 ﻿// Sample.Plugin
 // AboutViewModel.cs
 
-#region Usings
-
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
-#endregion
 
 namespace Sample.Plugin.ViewModels
 {

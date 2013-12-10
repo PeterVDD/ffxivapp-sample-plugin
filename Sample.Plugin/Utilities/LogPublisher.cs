@@ -1,16 +1,12 @@
 ﻿// Sample.Plugin
 // LogPublisher.cs
 
-#region Usings
-
 using System;
 using FFXIVAPP.Common.Core.Memory;
 using FFXIVAPP.Common.Utilities;
 using NLog;
 using Sample.Plugin.Properties;
 using Sample.Plugin.Views;
-
-#endregion
 
 namespace Sample.Plugin.Utilities
 {

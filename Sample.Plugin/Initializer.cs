@@ -1,8 +1,6 @@
 ﻿// Sample.Plugin
 // Initializer.cs
 
-#region Usings
-
 using System;
 using System.Windows;
 using System.Windows.Media;
@@ -10,8 +8,6 @@ using System.Xml.Linq;
 using FFXIVAPP.Common.Controls;
 using Sample.Plugin.Properties;
 using Sample.Plugin.Views;
-
-#endregion
 
 namespace Sample.Plugin
 {

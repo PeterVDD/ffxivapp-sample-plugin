@@ -1,8 +1,6 @@
 ﻿// Sample.Plugin
 // Settings.cs
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,8 +16,6 @@ using NLog;
 using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
 using FontFamily = System.Drawing.FontFamily;
-
-#endregion
 
 namespace Sample.Plugin.Properties
 {

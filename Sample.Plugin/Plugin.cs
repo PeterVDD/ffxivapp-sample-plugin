@@ -1,8 +1,6 @@
 ﻿// Sample.Plugin
 // Plugin.cs
 
-#region Usings
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,8 +18,6 @@ using NLog;
 using Sample.Plugin.Helpers;
 using Sample.Plugin.Properties;
 using Sample.Plugin.Utilities;
-
-#endregion
 
 namespace Sample.Plugin
 {

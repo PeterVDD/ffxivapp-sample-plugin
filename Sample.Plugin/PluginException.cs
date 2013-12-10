@@ -1,12 +1,8 @@
 ﻿// Sample.Plugin
 // PluginException.cs
 
-#region Usings
-
 using System;
 using System.Runtime.Serialization;
-
-#endregion
 
 namespace Sample.Plugin
 {
