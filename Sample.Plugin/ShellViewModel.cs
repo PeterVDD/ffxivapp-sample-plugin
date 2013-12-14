@@ -1,9 +1,11 @@
 ﻿// Sample.Plugin
 // ShellViewModel.cs
 
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using Sample.Plugin.Properties;
 
 namespace Sample.Plugin
 {
@@ -27,11 +29,18 @@ namespace Sample.Plugin
         public ShellViewModel()
         {
             Initializer.LoadSettings();
+            Settings.Default.PropertyChanged += DefaultOnPropertyChanged;
         }
 
         internal static void Loaded(object sender, RoutedEventArgs e)
         {
+            ShellView.View.Loaded -= Loaded;
             Initializer.ApplyTheming();
+        }
+
+        private static void DefaultOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            
         }
 
         #region Loading Functions
