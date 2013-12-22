@@ -164,7 +164,7 @@ namespace Sample.Plugin.Properties
         [DefaultSettingValue("100")]
         public Double Zoom
         {
-            get { return ((Double) (this["Zoom"])); }
+            get { return ((Double)(this["Zoom"])); }
             set
             {
                 this["Zoom"] = value;
