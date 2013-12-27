@@ -19,6 +19,7 @@ namespace Sample.Plugin
             Plugin.PHost.NewPlayerEntity += OnNewPlayerEntity;
             Plugin.PHost.NewTargetEntity += OnNewTargetEntity;
             Plugin.PHost.NewParseEntity += OnNewParseEntity;
+            Plugin.PHost.NewPartyEntries += OnNewPartyEntries;
         }
 
         public static void UnSubscribe()
@@ -31,6 +32,7 @@ namespace Sample.Plugin
             Plugin.PHost.NewPlayerEntity -= OnNewPlayerEntity;
             Plugin.PHost.NewTargetEntity -= OnNewTargetEntity;
             Plugin.PHost.NewParseEntity -= OnNewParseEntity;
+            Plugin.PHost.NewPartyEntries -= OnNewPartyEntries;
         }
 
         #region Subscriptions
@@ -145,6 +147,16 @@ namespace Sample.Plugin
                 return;
             }
             var parseEntity = parseEntityEvent.ParseEntity;
+        }
+
+        private static void OnNewPartyEntries(object sender, PartyEntitiesEvent partyEntitiesEvent)
+        {
+            // delegate event from party info worker that will give basic info on party members
+            if (sender == null)
+            {
+                return;
+            }
+            var partyEntities = partyEntitiesEvent.PartyEntities;
         }
 
         #endregion
