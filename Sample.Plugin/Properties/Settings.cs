@@ -7,8 +7,10 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+using System.Xml.Linq;
 using FFXIVAPP.Common.Helpers;
 using FFXIVAPP.Common.Models;
 using FFXIVAPP.Common.Utilities;
@@ -30,16 +32,31 @@ namespace Sample.Plugin.Properties
 
         public override void Save()
         {
-            XmlHelper.DeleteXmlNode(Constants.XSettings, "Setting");
-            if (Constants.Settings.Count == 0)
-            {
-            }
+            // this call to default settings only ensures we keep the settings we want and delete the ones we don't (old)
             DefaultSettings();
-            foreach (var item in Constants.Settings)
+            SaveSettingsNode();
+            // I would make a function for each node itself; other examples such as log/event would showcase this
+            Constants.XSettings.Save(Constants.BaseDirectory + "Settings.xml");
+        }
+
+        #region Iterative Settings Saving
+
+        private void SaveSettingsNode()
+        {
+            if (Constants.XSettings == null)
             {
-                try
+                return;
+            }
+            var xElements = Constants.XSettings.Descendants()
+                                     .Elements("Setting");
+            var enumerable = xElements as XElement[] ?? xElements.ToArray();
+            foreach (var setting in Constants.Settings)
+            {
+                var element = enumerable.FirstOrDefault(e => e.Attribute("Key")
+                                                              .Value == setting);
+                if (element == null)
                 {
-                    var xKey = item;
+                    var xKey = setting;
                     var xValue = Default[xKey].ToString();
                     var keyPairList = new List<XValuePair>
                     {
@@ -51,13 +68,18 @@ namespace Sample.Plugin.Properties
                     };
                     XmlHelper.SaveXmlNode(Constants.XSettings, "Settings", "Setting", xKey, keyPairList);
                 }
-                catch (Exception ex)
+                else
                 {
-                    Logging.Log(LogManager.GetCurrentClassLogger(), "", ex);
+                    var xElement = element.Element("Value");
+                    if (xElement != null)
+                    {
+                        xElement.Value = Default[setting].ToString();
+                    }
                 }
             }
-            Constants.XSettings.Save(Constants.BaseDirectory + "Settings.xml");
         }
+
+        #endregion
 
         private void DefaultSettings()
         {
