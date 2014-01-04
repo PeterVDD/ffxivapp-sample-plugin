@@ -1,6 +1,7 @@
 ﻿// Sample.Plugin
 // Constants.cs
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -33,11 +34,28 @@ namespace Sample.Plugin
         {
             get
             {
-                const string file = "./Plugins/Sample.Plugin/Settings.xml";
-                if (_xSettings == null)
+                var file = FFXIVAPP.Common.Constants.PluginsSettingsPath + "Sample.Plugin.xml";
+                var legacyFile = "./Plugins/Sample.Plugin/Settings.xml";
+                if (_xSettings != null)
+                {
+                    return _xSettings;
+                }
+                try
                 {
                     var found = File.Exists(file);
-                    _xSettings = found ? XDocument.Load(file) : ResourceHelper.XDocResource(LibraryPack + "/Defaults/Settings.xml");
+                    if (found)
+                    {
+                        _xSettings = XDocument.Load(file);
+                    }
+                    else
+                    {
+                        found = File.Exists(legacyFile);
+                        _xSettings = found ? XDocument.Load(legacyFile) : ResourceHelper.XDocResource(LibraryPack + "/Defaults/Settings.xml");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _xSettings = ResourceHelper.XDocResource(LibraryPack + "/Defaults/Settings.xml");
                 }
                 return _xSettings;
             }

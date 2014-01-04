@@ -36,7 +36,7 @@ namespace Sample.Plugin.Properties
             DefaultSettings();
             SaveSettingsNode();
             // I would make a function for each node itself; other examples such as log/event would showcase this
-            Constants.XSettings.Save(Constants.BaseDirectory + "Settings.xml");
+            Constants.XSettings.Save(FFXIVAPP.Common.Constants.PluginsSettingsPath + "Sample.Plugin.xml");
         }
 
         #region Iterative Settings Saving
