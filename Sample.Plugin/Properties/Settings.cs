@@ -1,5 +1,26 @@
 ﻿// Sample.Plugin
 // Settings.cs
+// 
+// Copyright © 2013 ZAM Network LLC
+// All rights reserved.
+// 
+// Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
+// following conditions are met: 
+// 
+//  * Redistributions of source code must retain the above copyright notice, this list of conditions and the following 
+//    disclaimer. 
+//  * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the 
+//    following disclaimer in the documentation and/or other materials provided with the distribution. 
+//  * Neither the name of ZAM Network LLC nor the names of its contributors may be used to endorse or promote products 
+//    derived from this software without specific prior written permission. 
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+// SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+// USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 
 using System;
 using System.Collections.Generic;
@@ -38,48 +59,6 @@ namespace Sample.Plugin.Properties
             // I would make a function for each node itself; other examples such as log/event would showcase this
             Constants.XSettings.Save(FFXIVAPP.Common.Constants.PluginsSettingsPath + "Sample.Plugin.xml");
         }
-
-        #region Iterative Settings Saving
-
-        private void SaveSettingsNode()
-        {
-            if (Constants.XSettings == null)
-            {
-                return;
-            }
-            var xElements = Constants.XSettings.Descendants()
-                                     .Elements("Setting");
-            var enumerable = xElements as XElement[] ?? xElements.ToArray();
-            foreach (var setting in Constants.Settings)
-            {
-                var element = enumerable.FirstOrDefault(e => e.Attribute("Key")
-                                                              .Value == setting);
-                if (element == null)
-                {
-                    var xKey = setting;
-                    var xValue = Default[xKey].ToString();
-                    var keyPairList = new List<XValuePair>
-                    {
-                        new XValuePair
-                        {
-                            Key = "Value",
-                            Value = xValue
-                        }
-                    };
-                    XmlHelper.SaveXmlNode(Constants.XSettings, "Settings", "Setting", xKey, keyPairList);
-                }
-                else
-                {
-                    var xElement = element.Element("Value");
-                    if (xElement != null)
-                    {
-                        xElement.Value = Default[setting].ToString();
-                    }
-                }
-            }
-        }
-
-        #endregion
 
         private void DefaultSettings()
         {
@@ -186,7 +165,7 @@ namespace Sample.Plugin.Properties
         [DefaultSettingValue("100")]
         public Double Zoom
         {
-            get { return ((Double)(this["Zoom"])); }
+            get { return ((Double) (this["Zoom"])); }
             set
             {
                 this["Zoom"] = value;
@@ -203,6 +182,48 @@ namespace Sample.Plugin.Properties
         private void RaisePropertyChanged([CallerMemberName] string caller = "")
         {
             PropertyChanged(this, new PropertyChangedEventArgs(caller));
+        }
+
+        #endregion
+
+        #region Iterative Settings Saving
+
+        private void SaveSettingsNode()
+        {
+            if (Constants.XSettings == null)
+            {
+                return;
+            }
+            var xElements = Constants.XSettings.Descendants()
+                                     .Elements("Setting");
+            var enumerable = xElements as XElement[] ?? xElements.ToArray();
+            foreach (var setting in Constants.Settings)
+            {
+                var element = enumerable.FirstOrDefault(e => e.Attribute("Key")
+                                                              .Value == setting);
+                if (element == null)
+                {
+                    var xKey = setting;
+                    var xValue = Default[xKey].ToString();
+                    var keyPairList = new List<XValuePair>
+                    {
+                        new XValuePair
+                        {
+                            Key = "Value",
+                            Value = xValue
+                        }
+                    };
+                    XmlHelper.SaveXmlNode(Constants.XSettings, "Settings", "Setting", xKey, keyPairList);
+                }
+                else
+                {
+                    var xElement = element.Element("Value");
+                    if (xElement != null)
+                    {
+                        xElement.Value = Default[setting].ToString();
+                    }
+                }
+            }
         }
 
         #endregion
