@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Xml.Linq;
 using FFXIVAPP.Common.Helpers;
 
@@ -35,14 +36,21 @@ namespace Sample.Plugin
     {
         #region Declarations
 
-        public const string BaseDirectory = "./Plugins/Sample.Plugin/";
-
         public const string LibraryPack = "pack://application:,,,/Sample.Plugin;component/";
 
         public static readonly string[] Supported = new[]
         {
             "en"
         };
+
+        public static string BaseDirectory
+        {
+            get
+            {
+                return Path.GetDirectoryName(Assembly.GetExecutingAssembly()
+                                                     .Location);
+            }
+        }
 
         #endregion
 
