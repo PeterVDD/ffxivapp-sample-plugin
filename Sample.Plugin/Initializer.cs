@@ -23,6 +23,7 @@
 // USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Linq;
@@ -53,7 +54,7 @@ namespace Sample.Plugin
                     {
                         return;
                     }
-                    Settings.SetValue(xKey, xValue);
+                    Settings.SetValue(xKey, xValue, CultureInfo.InvariantCulture);
                     if (!Constants.Settings.Contains(xKey))
                     {
                         Constants.Settings.Add(xKey);
