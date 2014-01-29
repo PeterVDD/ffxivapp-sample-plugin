@@ -63,7 +63,7 @@ namespace Sample.Plugin
         {
             get
             {
-                var file = FFXIVAPP.Common.Constants.PluginsSettingsPath + "Sample.Plugin.xml";
+                var file = Path.Combine(FFXIVAPP.Common.Constants.PluginsSettingsPath, "Sample.Plugin.xml");
                 var legacyFile = "./Plugins/Sample.Plugin/Settings.xml";
                 if (_xSettings != null)
                 {
@@ -143,6 +143,8 @@ namespace Sample.Plugin
         public static string GameLanguage { get; set; }
 
         public static bool EnableHelpLabels { get; set; }
+
+        public static string Theme { get; set; }
 
         #endregion
     }

@@ -29,6 +29,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
@@ -58,7 +59,7 @@ namespace Sample.Plugin.Properties
             DefaultSettings();
             SaveSettingsNode();
             // I would make a function for each node itself; other examples such as log/event would showcase this
-            Constants.XSettings.Save(FFXIVAPP.Common.Constants.PluginsSettingsPath + "Sample.Plugin.xml");
+            Constants.XSettings.Save(Path.Combine(FFXIVAPP.Common.Constants.PluginsSettingsPath, "Sample.Plugin.xml"));
         }
 
         private void DefaultSettings()
