@@ -79,10 +79,11 @@ namespace Sample.Plugin.Properties
                 }
                 var value = settingsProperty.DefaultValue.ToString();
                 SetValue(key, value, CultureInfo.InvariantCulture);
+                RaisePropertyChanged(key);
             }
         }
 
-        public static void SetValue(string key, string value, CultureInfo cultureInfo)
+        public void SetValue(string key, string value, CultureInfo cultureInfo)
         {
             try
             {

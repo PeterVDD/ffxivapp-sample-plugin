@@ -54,7 +54,7 @@ namespace Sample.Plugin
                     {
                         return;
                     }
-                    Settings.SetValue(xKey, xValue, CultureInfo.InvariantCulture);
+                    Settings.Default.SetValue(xKey, xValue, CultureInfo.InvariantCulture);
                     if (!Constants.Settings.Contains(xKey))
                     {
                         Constants.Settings.Add(xKey);
